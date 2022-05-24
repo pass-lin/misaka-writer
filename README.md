@@ -23,3 +23,5 @@ base/综合模型<br>
 提取码：9sno<br>
 <br>
 如有问题可加Q群-143626394(大群，除了本项目还有https://github.com/BlinkDL/AI-Writer项目群）、905398734（本项目小群）<br>
+最后misaka镇楼<br>
+![image](https://user-images.githubusercontent.com/62837036/170024801-1d10d8c5-266f-4ade-894c-67f30069f94f.png)
