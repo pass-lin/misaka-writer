@@ -20,4 +20,4 @@ base/综合模型<br>
 链接：https://pan.baidu.com/s/1SdvL6W70np2qp9jDWbsGVQ <br>
 提取码：9sno<br>
 <br>
-如有问题可加Q-935499957<br>
+如有问题可加Q群-143626394<br>
