@@ -1,4 +1,6 @@
-# ai-
+# ai-续写小说<br>
+基于encoder-decoder结构的续写小说模型<br>
+模型比较小只有8kw，模型结构是魔改的transformer模型<br>
 依赖环境<br>
 tensorflow 2.3.0 bert4keras jieba pandas<br>
 如果使用GPU请安装cuda和cudnn<br>
