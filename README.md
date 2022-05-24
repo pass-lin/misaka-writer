@@ -22,4 +22,4 @@ base/综合模型<br>
 链接：https://pan.baidu.com/s/1SdvL6W70np2qp9jDWbsGVQ <br>
 提取码：9sno<br>
 <br>
-如有问题可加Q群-143626394(大群，除了本项目还有https://github.com/BlinkDL/AI-Writer项目群）、<br>
+如有问题可加Q群-143626394(大群，除了本项目还有https://github.com/BlinkDL/AI-Writer项目群）、905398734（本项目小群）<br>
