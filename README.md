@@ -11,6 +11,9 @@ cuda版本10.1 cudnn7.6<br>
 num代表你要生成多少个开头<br>
 text就是你的开头<br>
 model_path是模型的权重路径<br>
+训练语料有100G中文和50G英文也分享出来  
+链接：https://pan.baidu.com/s/1WCiPA_tplI0AhdpDEuQ5ig  
+提取码：rlse  
 
 目前公开权重<br>
 base/综合模型<br>
