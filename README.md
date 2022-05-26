@@ -22,7 +22,15 @@ base/综合模型<br>
 链接：https://pan.baidu.com/s/1SdvL6W70np2qp9jDWbsGVQ <br>
 提取码：9sno<br>
 
-其他专用版本目前公开在qq群
+玄幻
+链接：https://pan.baidu.com/s/1vGBJr6NOsWQAvJvxjqld-w 
+提取码：hszv
+
+日轻
+链接：https://pan.baidu.com/s/1n7vXu-1uLF6XKtizoJmQZg 
+提取码：miw0
+
+如果受不了百度云的网速建议加QQ群在群文件下载
 <br>
 如有问题可加Q群-143626394(大群，除了本项目还有https://github.com/BlinkDL/AI-Writer项目群）、905398734（本项目小群），本人qq 935499957<br>
 最后misaka镇楼<br>
