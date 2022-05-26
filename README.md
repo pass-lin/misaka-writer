@@ -10,7 +10,7 @@ cuda版本10.1 cudnn7.6<br>
 <br>
 使用方法<br>
 ![image](https://user-images.githubusercontent.com/62837036/169949572-b64ac754-e590-4cd3-bee5-08a597fa60b8.png)<br>
-num代表你要生成多少个开头，建议在50字以上<br>
+num代表你要生成多少个开头，建议输入在20到250字之间<br>
 text就是你的开头<br>
 model_path是模型的权重路径<br>
 训练语料有100G中文和50G英文也分享出来  
