@@ -32,6 +32,6 @@ base/综合模型
 
 如果受不了百度云的网速建议加QQ群在群文件下载
 <br>
-如有问题可加Q群-143626394(大群，除了本项目还有https://github.com/BlinkDL/AI-Writer项目群）、905398734（本项目小群），本人qq 935499957<br>
+如有问题可加Q群-143626394(大群，除了本项目还有 https://github.com/BlinkDL/AI-Writer 项目群）、905398734（本项目小群），本人qq 935499957<br>
 最后misaka镇楼<br>
 ![image](https://user-images.githubusercontent.com/62837036/170024801-1d10d8c5-266f-4ade-894c-67f30069f94f.png)
