@@ -18,8 +18,8 @@ model_path是模型的权重路径<br>
 提取码：rlse  
 
 目前公开权重<br>
-base/综合模型<br>
-链接：https://pan.baidu.com/s/1SdvL6W70np2qp9jDWbsGVQ <br>
+base/综合模型
+链接：https://pan.baidu.com/s/1SdvL6W70np2qp9jDWbsGVQ
 提取码：9sno<br>
 
 玄幻
