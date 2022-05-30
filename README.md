@@ -30,7 +30,7 @@ base/综合模型
 链接：https://pan.baidu.com/s/1n7vXu-1uLF6XKtizoJmQZg 
 提取码：miw0
 
-如果受不了百度云的网速建议加QQ群在群文件下载
+如果受不了百度云的网速建议加QQ群在群文件下载,更多类型目前现在Q群测试
 <br>
 如有问题可加Q群-143626394(大群，除了本项目还有 https://github.com/BlinkDL/AI-Writer 项目群）、905398734（本项目小群），本人qq 935499957<br>
 最后misaka镇楼<br>
