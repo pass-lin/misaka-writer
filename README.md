@@ -13,6 +13,7 @@ cuda版本10.1 cudnn7.6<br>
 ![image](https://user-images.githubusercontent.com/62837036/169949572-b64ac754-e590-4cd3-bee5-08a597fa60b8.png)<br>
 num代表你要生成多少个开头，建议输入在20到250字之间<br>
 text就是你的开头<br>
+如果想写英文内容，在get_model函数的return语句里把start_token=4改为=5  
 model_path是模型的权重路径<br>
 训练语料有100G中文和50G英文也分享出来  
 链接：https://pan.baidu.com/s/1WCiPA_tplI0AhdpDEuQ5ig  
