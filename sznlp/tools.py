@@ -159,6 +159,8 @@ class seq2seq_Generate():
         n=0
         encoder_out=self.encoder_predict(data)
         stop=np.zeros(l)
+        import tqdm
+        tq = tqdm.tqdm()
         while sum(stop[:]==self.end_token)!=l:#终止运算条件一全都预测完
             if n>max_len:#二预测到最大长度
                 break
@@ -176,6 +178,8 @@ class seq2seq_Generate():
             t[index]=y[:,-1]
             t=np.reshape(t,[l,1])
             decode_result=np.concatenate([decode_result,t],-1)
+            tq.update(1)
+        tq.close()
         return decode_result,stop
     def load_data(self,datas,nums=5):
         x=[]

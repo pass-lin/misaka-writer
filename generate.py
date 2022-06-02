@@ -4,16 +4,15 @@ Created on Mon Apr 18 13:22:37 2022
 
 @author: Administrator
 """
-model_path='综合.h5'#模型路径
+model_path='models/综合.h5'#模型路径
 nums=3#开头生成多个下文
 #开头
 text='''
-却说张飞带着几人与那鲁智深厮杀起来，那鲁智深使了个开碑裂石的招数，把那张飞一把丢在地上，自己落了地，往外便跑。
-　到了门口，被他的随从一个劲的追杀。张飞心中一怒，便一刀砍在一名将军的腿上，那名将军疼的大叫着往前一滚，张飞一个转身，一脚便踢在他的胸口上，那人一下子滚到了台阶边，也是摔了个四脚朝天。
-　张飞不敢恋战，赶紧带了几个人从后门离去，一路上还不断的大叫：
-　“鲁智深，我与你不共戴天！”
-
+奥运会是一个国家实力的象征，是对体育精神的尊重。运动员们在舞台上展示他们坚强的意志、优美的姿态和灵活的技巧。成千上万的观众为他们欢呼。每一次挑战自己的极限，每一次与成功失之交臂，不承认失败，都会让运动员站起来，投入到更加艰苦的训练中。每一次的全力以赴，都让我们深感自豪。每一枚奥运奖牌的价值远远超过世界上所有的金银财宝。
+奥运会不是一个简单的体育赛事，而是一个永不改变的信念。随着冬奥会的到来，我们用文明装点城市的每一个角落，伸出礼仪之手，迎接来自世界各地的游客，弘扬民族精神，彰显民族文化。通过精神文明建设的全面发展，我们为全社会营造了举办奥运会的文明氛围，让世界看到一个更加文明、包容、友好的中国。
 '''
+output = 'out.txt'
+
 import json
 import os
 os.environ['TF_KERAS'] = '1'
@@ -67,8 +66,9 @@ def get_writer_model():
                            output_dims=tokenizer._vocab_size+1,
                            **argument).model(split_model=True)
     
+    # model.summary()
     model.load_weights(model_path)
-    #model.summary()
+    
     
     
     encoder=keras.Model(model.inputs[0],model.get_layer('masking_8').output)
@@ -95,12 +95,11 @@ result=generate.writer([text.replace('\n', '氼')],#文本数据就是上面的d
                mode='topp',#别动
                iter_max_num=0,)#检查重复解码的句子的次数，越大就越慢同时重复句子越少)
 end=time.time()
-s=''
-for t in text.split('\n'):
-    s+='\t'+t+'\n'
+s = ''.join('\t'+t+'\n' for t in text.split('\n'))
 text=s
-for i in range(nums):
-    print(text)
-    for t in result[i].split('氼'):
-        print('\t'+t)
-    print('*******************************************************************************')
+with open(output,'w',encoding='utf-8') as f:
+    for i in range(nums):
+        f.write(text + '\n')
+        for t in result[i].split('氼'):
+            f.write('\t'+t+'\n')
+        f.write('*******************************************************************************\n')
