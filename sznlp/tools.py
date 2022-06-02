@@ -78,19 +78,23 @@ class seq2seq_Generate():
             self.end_token=end_token
         else:
             self.end_token=tokenizer._token_end_id
-    def encoder_predict(self,data):
+    def encoder_predict(self,data,batch_size=32):
         #编码
+        if len(data)>batch_size:
+            return self.encoder.predict(data,batch_size=batch_size)
         return np.array(self.encoder(data))
     def decoder_predict(self,encoder_out,decoder_input,batch_size=32):
         #解码
-        return self.decoder.predict([encoder_out,decoder_input],batch_size=batch_size)
+        if len(decoder_input)>batch_size: 
+            return self.decoder.predict([encoder_out,decoder_input],batch_size=batch_size)
+        return self.decoder([encoder_out,decoder_input])
     def select(self,encoder_out,decode_result,index):
         #筛选
         decoder_input=decode_result[index]
         vector=encoder_out[index]
         return decoder_input,vector
     def greedy_search(self,data,k=10,batch_size=32,max_len=512):
-        encoder_out=self.encoder_predict(data)
+        encoder_out=self.encoder_predict(data,batch_size)
         l=len(data)
         decode_result=np.array([[self.start_token]]*l)#初始数据
         n=0
@@ -157,7 +161,7 @@ class seq2seq_Generate():
             sample=self.topp_sample
         decode_result=np.array([[self.start_token]]*l)
         n=0
-        encoder_out=self.encoder_predict(data)
+        encoder_out=self.encoder_predict(data,batch_size)
         stop=np.zeros(l)
         import tqdm
         tq = tqdm.tqdm()
@@ -165,7 +169,9 @@ class seq2seq_Generate():
             if n>max_len:#二预测到最大长度
                 break
             n+=1
+            
             index=stop[:]!=self.end_token#找出预测完的序列
+            print(sum(stop[:]!=self.end_token),n)
             #只预测没预测完的序列以节省资源
             decoder_input,vector=self.select(encoder_out,decode_result,index)
             #解码
