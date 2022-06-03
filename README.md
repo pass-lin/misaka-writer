@@ -42,9 +42,9 @@ pip install tensorflow==2.5.0 bert4keras jieba
 
 `model_path` 是模型的权重路径，建议使用相对路径。
 
-`num` 代表生成的下文的数量。 `text` 为输入，建议输入在20到250字之间。
+`support_english` 表示英文/中文模式，`False` 表示中文模式。
 
-**如果想写英文内容，修改 `load_model.py` 中 `get_writer_model` 函数的 `return` 语句，把 `start_token=4` 改为 `start_token=4`。**
+`num` 代表生成的下文的数量。 `text` 为输入，建议输入在20到250字之间。
 
 
 ## 训练语料

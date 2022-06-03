@@ -11,6 +11,7 @@ except ImportError:
 
 if __name__ == "__main__":
     model_path = "models/综合.h5"  # 模型路径
+    support_english = False  # 英文/中文模式
     nums = 3  # 开头生成下文的数量
     # 开头，建议开头字数在50字到200字之间
     text = """
@@ -22,7 +23,7 @@ if __name__ == "__main__":
     output = "out.txt"  # 输出文件名
 
     # 加载模型
-    generator = get_writer_model(model_path)
+    generator = get_writer_model(model_path, support_english=support_english)
     # 生成
     text = textwrap.dedent(text)
 

@@ -21,7 +21,7 @@ def list_models():
     for model in cwd.rglob("*.h5"):
         yield model.relative_to(cwd).as_posix()
 
-def get_writer_model(model_path):
+def get_writer_model(model_path, support_english: bool = False):
     # 别动，动一下跑不了后果自负
     block_num = 8
     n_head = 8
@@ -76,4 +76,4 @@ def get_writer_model(model_path):
     encoder_output = keras.layers.Input(tensor=encoder.output)
     encoder_output = keras.layers.Input(tensor=encoder.output)
     decoder = keras.Model([encoder_output, model.inputs[1]], model.output)
-    return seq2seq_Generate(encoder, decoder, tokenizer, start_token=4)
+    return seq2seq_Generate(encoder, decoder, tokenizer, start_token=5 if support_english else 4)
