@@ -93,7 +93,7 @@ class seq2seq_Generate():
         decoder_input=decode_result[index]
         vector=encoder_out[index]
         return decoder_input,vector
-    def greedy_search(self,data,k=10,batch_size=32,max_len=512):
+    def greedy_search(self,data,k=10,batch_size=32,max_len=512,step_callback=None):
         encoder_out=self.encoder_predict(data,batch_size)
         l=len(data)
         decode_result=np.array([[self.start_token]]*l)#初始数据
@@ -113,6 +113,8 @@ class seq2seq_Generate():
             t[index]=y[:,-1]
             t=np.reshape(t,[l,1])
             decode_result=np.concatenate([decode_result,t],-1)
+            if step_callback!=None:
+                step_callback(decode_result)
         return decode_result,stop
     def topk_sample(self,y,k=10):
         y=y[:,-1,:]
@@ -151,27 +153,25 @@ class seq2seq_Generate():
             y_pre.append(np.random.choice(pre,p=pro))
         y=np.reshape(y_pre,[-1,1])
         return y
-    def random_decoder(self,data,k=10,batch_size=32,max_len=512,mode='topk'):
+    def random_decoder(self,data,k=10,batch_size=32,max_len=512,mode='topk',step_callback=None):
         l=len(data)
         if mode=='topk':
             sample=self.topk_sample
         elif mode=='topp':
             if k>1:
-                raise('topp的k值应该为0到1之间')
+                raise RuntimeError('topp的k值应该为0到1之间')
             sample=self.topp_sample
         decode_result=np.array([[self.start_token]]*l)
         n=0
         encoder_out=self.encoder_predict(data,batch_size)
         stop=np.zeros(l)
-        import tqdm
-        tq = tqdm.tqdm()
         while sum(stop[:]==self.end_token)!=l:#终止运算条件一全都预测完
             if n>max_len:#二预测到最大长度
                 break
             n+=1
             
             index=stop[:]!=self.end_token#找出预测完的序列
-            print(sum(stop[:]!=self.end_token),n)
+            # print(sum(stop[:]!=self.end_token),n)
             #只预测没预测完的序列以节省资源
             decoder_input,vector=self.select(encoder_out,decode_result,index)
             #解码
@@ -184,8 +184,8 @@ class seq2seq_Generate():
             t[index]=y[:,-1]
             t=np.reshape(t,[l,1])
             decode_result=np.concatenate([decode_result,t],-1)
-            tq.update(1)
-        tq.close()
+            if step_callback:
+                step_callback()
         return decode_result,stop
     def load_data(self,datas,nums=5):
         x=[]
@@ -207,12 +207,12 @@ class seq2seq_Generate():
         result[stop[:]!=self.end_token]=news[:]
         stop[stop[:]!=self.end_token]=newstop[:]
         return   result,stop
-    def predict(self,data,k=10,batch_size=32,max_len=512,iter_data_num=400,iter_max_num=1,mode='topk'):
+    def predict(self,data,k=10,batch_size=32,max_len=512,iter_data_num=400,iter_max_num=1,mode='topk',step_callback=None):
         if mode=='greedy':
-            a,stop=self.greedy_search(data,k,batch_size,max_len)
+            a,stop=self.greedy_search(data,k,batch_size,max_len,step_callback=step_callback)
             
         else:
-            a,stop=self.random_decoder(data,k,batch_size,max_len,mode=mode)
+            a,stop=self.random_decoder(data,k,batch_size,max_len,mode=mode,step_callback=step_callback)
         #如果存在重复解码现象，那就再随机解码一次
         while sum(stop[:]==self.end_token)!=len(stop):
             t=self.random_decoder(data[stop[:]!=self.end_token],k,batch_size,max_len,mode)
@@ -230,16 +230,17 @@ class seq2seq_Generate():
                           iter_data_num=400,#一次迭代迭代多少数据
                           mode='topk',#计算模式
                           iter_max_num=1,
+                          step_callback=None,
                           ):
         result=[]
         l=len(data)
         #因为显存限制，数据过大的时候需要分散解码
         if l<iter_data_num:
-            return self.predict(data,k,batch_size,max_len,mode,iter_max_num=iter_max_num,mode=mode)
+            return self.predict(data,k,batch_size,max_len,mode,iter_max_num=iter_max_num,mode=mode,step_callback=step_callback)
         else:  
             for i in range(l//iter_data_num):
                 j=i*iter_data_num
-                result.extend(self.predict(data[j:j+iter_data_num],k,batch_size,max_len,mode))
+                result.extend(self.predict(data[j:j+iter_data_num],k,batch_size,max_len,mode,step_callback=step_callback))
         return result
     def writer(self,data,#文本数据
                nums=1,#输入要生成几个文本
@@ -248,9 +249,10 @@ class seq2seq_Generate():
                max_len=512,
                iter_data_num=400,
                mode='topk',
-               iter_max_num=1,):
+               iter_max_num=1,
+               step_callback=None,):
         data=self.load_data(data,nums)
-        ys=self.generate_sentence(data,k,batch_size,max_len,iter_data_num,mode,iter_max_num=iter_max_num)
+        ys=self.generate_sentence(data,k,batch_size,max_len,iter_data_num,mode,iter_max_num=iter_max_num,step_callback=step_callback)
         result=[]
         try:
             for y in ys:
