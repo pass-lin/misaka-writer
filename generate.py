@@ -3,14 +3,14 @@
 import sys
 import time
 
-def generate(generator, text: str, nums: int = 3, step_callback=None):
+def generate(generator, text: str, max_len: int = 512, nums: int = 3, step_callback=None):
     start = time.time()
     result = generator.writer(
         [text.replace("\n", "氼")],  # 文本数据就是上面的data
         nums=nums,  # 一个开头要生成几个文本
         k=0.8,  # 搜索窗口
         batch_size=32,
-        max_len=512,  # 最大长度
+        max_len=max_len,  # 最大长度
         iter_data_num=400,  # 一次处理多少个开头
         mode="topp",  # 别动
         iter_max_num=0,
