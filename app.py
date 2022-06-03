@@ -18,7 +18,9 @@ model = st.session_state["current_model"]
 
 st.sidebar.markdown("---")
 
-max_len = int(st.sidebar.number_input("续写最大长度：", min_value=50, max_value=512, value=512))
+max_len = int(
+    st.sidebar.number_input("续写最大长度：", min_value=50, max_value=512, value=512)
+)
 nums = int(st.sidebar.number_input("生成下文的数量：", min_value=1, max_value=5, value=3))
 
 text = st.text_area(
@@ -29,10 +31,10 @@ text = st.text_area(
 张飞不敢恋战，赶紧带了几个人从后门离去，一路上还不断的大叫：
 “鲁智深，我与你不共戴天！”
 """.strip(),
-    height=250
+    height=250,
 )
 
-if (
+if model_path and (
     model_path != st.session_state["current_model_path"]
     or model is None
     or support_english != st.session_state["current_support_english"]
@@ -69,8 +71,10 @@ class ProgressBar:
 
 if model and st.button("开始生成"):
     with ProgressBar(total=max_len * (len(text) // 400 + 1) + 10) as pbar:
-        outputs, time_consumed = generate(model, text, max_len=max_len, nums=nums, step_callback=pbar.update)
+        outputs, time_consumed = generate(
+            model, text, max_len=max_len, nums=nums, step_callback=pbar.update
+        )
         st.success(f"生成完成！耗时：{time_consumed}s")
         for i, output in enumerate(outputs):
             st.subheader(f"续写{i + 1}")
-            st.write(output.replace('\n', '\n\n'))
+            st.write(output.replace("\n", "\n\n"))
