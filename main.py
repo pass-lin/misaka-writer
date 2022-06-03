@@ -3,7 +3,11 @@ import sys
 from generate import generate
 from load_model import get_writer_model
 import textwrap
-import tqdm
+import itertools
+try:
+    import tqdm
+except ImportError:
+    tqdm = None
 
 if __name__ == "__main__":
     model_path = "models/综合.h5"  # 模型路径
@@ -21,12 +25,17 @@ if __name__ == "__main__":
     generator = get_writer_model(model_path)
     # 生成
     text = textwrap.dedent(text)
-    
-    with tqdm.tqdm(total=512 * (len(text) // 400 + 1) + 10) as progress_bar:
-        progress_bar.set_description("Generating")
-        outputs, time_consumed = generate(generator, text, nums, step_callback=lambda: progress_bar.update(1))    
-        while progress_bar.n < progress_bar.total:  # type: ignore
-            progress_bar.update(1)
+
+    if tqdm is not None:
+        with tqdm.tqdm(total=512 * (len(text) // 400 + 1) + 10) as progress_bar:
+            progress_bar.set_description("Generating")
+            outputs, time_consumed = generate(generator, text, nums, step_callback=lambda: progress_bar.update(1))    
+            while progress_bar.n < progress_bar.total:  # type: ignore
+                progress_bar.update(1)
+    else:
+        spin = itertools.cycle("|/-\\")
+        outputs, time_consumed = generate(generator, text, nums, step_callback=lambda: sys.stderr.write("\rGenerating {}".format(next(spin))))
+        sys.stderr.write("\r")
     sys.stderr.write(f"Finished in {time_consumed:.2f}s.\n")
 
     # 输出
