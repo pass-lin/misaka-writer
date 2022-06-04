@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import sys
 import time
 
 def generate(generator, text: str, max_len: int = 512, nums: int = 3, step_callback=None):

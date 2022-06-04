@@ -1,7 +1,18 @@
-import streamlit as st
-from load_model import list_models, get_writer_model
-from generate import generate
+import sys
 import time
+
+import pyperclip
+import streamlit as st
+
+from generate import generate
+from load_model import get_writer_model, gpus, list_models
+
+if 'gpu_checked' in st.session_state:
+    st.session_state['gpu_checked'] = True
+elif not gpus:
+    sys.stderr.write("No available GPU found.\n")
+else:
+    sys.stderr.write(f"Available GPUs: {gpus}\n")
 
 if "current_model_path" not in st.session_state:
     st.session_state["current_model_path"] = None
@@ -9,6 +20,10 @@ if "current_model" not in st.session_state:
     st.session_state["current_model"] = None
 if "current_support_english" not in st.session_state:
     st.session_state["current_support_english"] = False
+if "outputs" not in st.session_state:
+    st.session_state["outputs"] = []
+if "time_consumed" not in st.session_state:
+    st.session_state["time_consumed"] = 0
 
 model_path = st.sidebar.selectbox("选择模型：", list(list_models()))
 support_english = st.sidebar.checkbox(
@@ -21,7 +36,7 @@ st.sidebar.markdown("---")
 max_len = int(
     st.sidebar.number_input("续写最大长度：", min_value=50, max_value=512, value=512)
 )
-nums = int(st.sidebar.number_input("生成下文的数量：", min_value=1, max_value=5, value=3))
+nums = int(st.sidebar.number_input("生成下文的数量：", min_value=1, max_value=10, value=3))
 
 text = st.text_area(
     "输入开头（建议50~250字）：",
@@ -74,7 +89,14 @@ if model and st.button("开始生成"):
         outputs, time_consumed = generate(
             model, text, max_len=max_len, nums=nums, step_callback=pbar.update
         )
-        st.success(f"生成完成！耗时：{time_consumed}s")
-        for i, output in enumerate(outputs):
-            st.subheader(f"续写{i + 1}")
-            st.write(output.replace("\n", "\n\n"))
+        st.session_state["outputs"] = outputs
+        st.session_state["time_consumed"] = time_consumed
+
+if st.session_state["outputs"]:
+    outputs = st.session_state["outputs"]
+    time_consumed = st.session_state["time_consumed"]
+    st.success(f"生成完成！耗时：{time_consumed}s")
+    for i, output in enumerate(outputs):
+        st.subheader(f"续写{i + 1}")
+        st.write(output.replace("\n", "\n\n"))
+        st.button("复制", key=i, on_click=(lambda output: lambda: pyperclip.copy(output))(output))
