@@ -37,6 +37,7 @@ if __name__ == "__main__":
         f"http://127.0.0.1:{port}",
         width=1280,
         height=720,
+        text_select=True,        
     )
 
     def listen():
