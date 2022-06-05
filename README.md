@@ -76,6 +76,7 @@ pip install tensorflow==2.5.0 bert4keras jieba
 
 如有问题可加Q群-143626394(大群，除了本项目还有 https://github.com/BlinkDL/AI-Writer 项目群）、905398734（本项目小群），本人qq 935499957
 
+感谢由北大美少女提供的进度条和ui，ui详解：https://github.com/Wybxc/misaka-writer-ui
 ---
 
 最后，misaka镇楼
