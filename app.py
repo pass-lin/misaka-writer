@@ -37,6 +37,7 @@ max_len = int(
     st.sidebar.number_input("续写最大长度：", min_value=50, max_value=512, value=512)
 )
 nums = int(st.sidebar.number_input("生成下文的数量：", min_value=1, max_value=10, value=3))
+mode = st.sidebar.selectbox("续写模式：", ("topp", "topk"))
 
 text = st.text_area(
     "输入开头（建议50~250字）：",
@@ -69,12 +70,11 @@ class ProgressBar:
 
     def update(self, count=1):
         self._count += count
+        if self._count >= self._total * 0.95:
+            self._count = self._total * 0.95
         self._pbar.progress(int(self._count / self._total * 100))
 
     def finish(self):
-        while self._count < self._total:
-            time.sleep(0.01)
-            self.update(1)
         self._pbar.progress(100)
 
     def __enter__(self):
@@ -87,7 +87,7 @@ class ProgressBar:
 if model and st.button("开始生成"):
     with ProgressBar(total=max_len * (len(text) // 400 + 1) + 10) as pbar:
         outputs, time_consumed = generate(
-            model, text, max_len=max_len, nums=nums, step_callback=pbar.update
+            model, text, max_len=max_len, nums=nums, mode=mode, step_callback=pbar.update
         )
         st.session_state["outputs"] = outputs
         st.session_state["time_consumed"] = time_consumed
